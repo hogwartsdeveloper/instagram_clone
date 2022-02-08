@@ -6,7 +6,14 @@ import { Text, View } from "react-native";
 import LandingScreen from "./components/auth/Landing";
 import LoginScreen from "./components/auth/Login";
 import RegisterScreen from "./components/auth/Register";
+import MainScreen from "./components/Main";
+
 import { auth } from "./firebase";
+import { Provider } from "react-redux"
+import { createStore, applyMiddleware } from "redux"
+import rootReducer from "./redux/reducers"
+import thunk from "redux-thunk";
+const store = createStore(rootReducer, applyMiddleware(thunk))
 
 const Stack = createNativeStackNavigator()
 
@@ -38,7 +45,7 @@ export class App extends Component {
     const { loggedIn, loaded } = this.state;
     if(!loaded) {
       return (
-        <View style={{ flex: 1, justifyContent: 'center'}}>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <Text>Loading</Text>
         </View>
       )
@@ -57,9 +64,9 @@ export class App extends Component {
     }
 
     return (
-      <View style={{ flex: 1, justifyContent: 'center'}}>
-        <Text>User is logged in</Text>
-      </View>
+      <Provider store={store}>
+        <MainScreen />
+      </Provider>
     )
   }
 }
