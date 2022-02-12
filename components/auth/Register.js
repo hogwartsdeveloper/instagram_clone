@@ -1,6 +1,6 @@
 import { Component } from "react";
 import { Button, TextInput, View } from "react-native";
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth"
+import { createUserWithEmailAndPassword } from "firebase/auth"
 import { app, auth } from "../../firebase";
 import { collection, doc, getDocs, getFirestore, query, setDoc } from "firebase/firestore"
 
@@ -22,7 +22,7 @@ export class Register extends Component {
         createUserWithEmailAndPassword(auth, email, password)
             .then((result) => {
                 const db = getFirestore(app);
-                setDoc(doc(db, "users", getAuth(app).currentUser.uid), {
+                setDoc(doc(db, "users", auth.currentUser.uid), {
                     name,
                     email
                 })

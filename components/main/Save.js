@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { Button, Image, TextInput, View } from 'react-native'
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage"
-import { getAuth } from 'firebase/auth';
-import { app } from '../../firebase';
+import { app, auth } from '../../firebase';
 import { doc, getFirestore, serverTimestamp, setDoc, collection } from 'firebase/firestore';
 
 export default function Save(props) {
@@ -10,7 +9,7 @@ export default function Save(props) {
 
     const uploadImage = async () => {
         const uri = props.route.params.image;
-        const childPath = `posts/${getAuth(app).currentUser.uid}/${Math.random().toString(36)}`
+        const childPath = `posts/${auth.currentUser.uid}/${Math.random().toString(36)}`
         const response = await fetch(uri);
         const blob = await response.blob();
 
@@ -41,7 +40,7 @@ export default function Save(props) {
 
     const savePostData = (downloadURL) => {
         const db = getFirestore(app);
-        const fireDoc = doc(db, "posts", getAuth(app).currentUser.uid)
+        const fireDoc = doc(db, "posts", auth.currentUser.uid)
         const colRef = doc(collection(fireDoc, "userPosts"))
         setDoc(colRef, {
             downloadURL,
