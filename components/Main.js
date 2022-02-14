@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux"
 import { bindActionCreators } from "redux"
-import { fetchUser, fetchUserPosts } from '../redux/actions';
+import { fetchUser, fetchUserPosts, fetchUserFollowing } from '../redux/actions';
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs"
 import FeedScreen from './main/Feed';
 import  MaterialCommunityIcons  from "react-native-vector-icons/MaterialCommunityIcons"
@@ -18,6 +18,7 @@ export class Main extends Component {
     componentDidMount() {
         this.props.fetchUser();
         this.props.fetchUserPosts();
+        this.props.fetchUserFollowing();
     }
 
     render() {
@@ -81,6 +82,6 @@ const mapStateToProps = (store) => ({
     currentUser: store.userState.currentUser
 })
 
-const mapDispatchProps = (dispatch) => bindActionCreators({fetchUser, fetchUserPosts}, dispatch)
+const mapDispatchProps = (dispatch) => bindActionCreators({fetchUser, fetchUserPosts, fetchUserFollowing}, dispatch)
 
 export default connect(mapStateToProps, mapDispatchProps)(Main);
