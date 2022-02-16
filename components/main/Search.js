@@ -18,7 +18,6 @@ export default function Search(props) {
             user.push({id, ...data})
         })
         setUsers(user);
-        console.log(users);
     }
     return (
         <View>

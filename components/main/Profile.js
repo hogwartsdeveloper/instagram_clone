@@ -42,7 +42,6 @@ function Profile(props) {
       setFollowing(true)
     } else {
       setFollowing(false)
-      console.log(props.route.params.uid);
     }
 
   }, [props.route.params.uid, props.following])
