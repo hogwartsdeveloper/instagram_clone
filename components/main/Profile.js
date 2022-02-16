@@ -60,6 +60,10 @@ function Profile(props) {
     await deleteDoc(userFollowRef)
   }
 
+  const onLogout = async () => {
+    auth.signOut();
+  }
+
   if(user === null) {
     return <View />
   }
@@ -84,7 +88,11 @@ function Profile(props) {
                 />
               )}
             </View>
-          ) : null}
+          ) : 
+            <Button 
+                title='Logout'
+                onPress={() => onLogout()}
+            />}
         </View>
         <View style={styles.containerGallery}>
           <FlatList 
