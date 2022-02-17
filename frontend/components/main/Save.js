@@ -45,6 +45,7 @@ export default function Save(props) {
         setDoc(colRef, {
             downloadURL,
             caption,
+            likesCount: 0,
             creation: serverTimestamp()
         })
             .then((function () {

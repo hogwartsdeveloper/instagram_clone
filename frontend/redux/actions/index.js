@@ -6,7 +6,8 @@ import {
     USER_STATE_CHANGE, 
     USERS_DATA_STATE_CHANGE, 
     USERS_POSTS_STATE_CHANGE,
-    CLEAR_DATA
+    CLEAR_DATA,
+    USERS_LIKES_STATE_CHANGE
 } from "../constants";
 
 export function clearData() {
@@ -109,7 +110,32 @@ export function fetchUsersFollowingPosts(uid) {
                 return { id, ...data, user}
             })
 
+            for(let i = 0; i < posts.length; i++) {
+                dispatch(fetchUsersFollowingLikes(uid, posts[i].id))
+            }
+
             dispatch({ type: USERS_POSTS_STATE_CHANGE, posts, uid })
+        })
+    })
+}
+
+export function fetchUsersFollowingLikes(uid, postId) {
+    return ((dispatch) => {
+        const db = getFirestore(app);
+        const postRef = doc(db, "posts", uid)
+        const userPostRef = doc(postRef, "userPosts", postId)
+        const likesRef = doc(userPostRef, "likes", auth.currentUser.uid)
+
+        onSnapshot(likesRef, (snapshot) => {
+            const postId = snapshot.ref.path.split('/')[3];
+            console.log(postId);
+
+            let currentUserLike = false;
+            if(snapshot.exists) {
+                currentUserLike = true;
+            }
+
+            dispatch({ type: USERS_LIKES_STATE_CHANGE, postId, currentUserLike })
         })
     })
 }
